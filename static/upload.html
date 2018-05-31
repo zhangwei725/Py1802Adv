@@ -8,6 +8,7 @@
     <script type="text/javascript" language="JavaScript">
         $(function () {
             $('#btn').click(function () {
+                //封装form表单数据的对象
                 let data = new FormData();
                 data.append('msg', $('#msg').val());
                 data.append('img', $('#img')[0].files[0]);
