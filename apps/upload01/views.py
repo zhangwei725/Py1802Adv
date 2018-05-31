@@ -37,7 +37,7 @@ b 二进制数据
 
 def upload(request):
     if request.method == 'GET':
-        return render(request, 'file_upload.html')
+        return render(request, 'templates/file_upload.html')
     elif request.method == 'POST':
         username = request.POST.get('username')
         # UploadFile
