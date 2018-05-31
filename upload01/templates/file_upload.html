@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- 只能整个界面刷新 -->
+<!-- 如果想实现界面局部刷新必须使用ajax提交数据 -->
+<form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    <!-- 显示文件上传的类型 -->
+    <input type="text" name="username">
+    <!-- 单个文件上传 -->
+    <input type="file" name="head" accept="image/*">
+    <!-- 多个文件上传  multiple -->
+    <!-- <input type="file" multiple name="heads" accept="application/pdf">-->
+    <input type="submit" value="提交">
+</form>
+</body>
+</html>

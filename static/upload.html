@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-2.1.0.js">
+    </script>
+    <script type="text/javascript" language="JavaScript">
+        $(function () {
+            $('#btn').click(function () {
+                let data = new FormData();
+                data.append('msg', $('#msg').val());
+                data.append('img', $('#img')[0].files[0]);
+                let settings = {
+                    url: 'http://127.0.0.1:8001/upload/up_img/',
+                    type: 'post',
+                    data: data,
+                    // 不要让jquery处理数据
+                    processData: false,
+                    success: function (result) {
+                        $('#show_img').append($('<img>').attr('src', 'http://127.0.0.1:8001/' + result))
+                    }
+                };
+                $.ajax(settings)
+            })
+        })
+    </script>
+</head>
+<body>
+<form action="/upload/up_img/" method="post" enctype="multipart/form-data">
+    <input type="text" name="msg" id="msg">
+    <input type="file" name="img" id="img">
+    <input type="button" id="btn" value="提交">
+</form>
+<div id="show_img">
+
+</div>
+
+
+</body>
+</html>
