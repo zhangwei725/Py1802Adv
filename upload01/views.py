@@ -1,8 +1,10 @@
 import datetime
+import json
 
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 
 
 class UploadView(View):
@@ -14,6 +16,7 @@ class UploadView(View):
 
     def put(self, request):
         pass
+
 
 """
 
@@ -44,7 +47,6 @@ def upload(request):
         # print(file_name.split('.')[-1])
         # 获取文件的大小
         # uplaod_file.size
-
         # 读取客服端上传整个文件数据,文件过大慎用
         # upload_file.read()
         # 把文件对象按着指定大小切割
@@ -64,6 +66,24 @@ def upload(request):
         return HttpResponse('不支持的请求')
 
 
+@csrf_exempt
+def ajax_upload(request):
+    result = {}
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        upload_file = request.FILES.get('img')
+        chunks = upload_file.chunks()  #
+        path = get_file_path(1) + get_file_name(upload_file.name)
+        with open(path, 'wb') as f:
+            for chunk in chunks:
+                f.write(chunk)
+            f.flush()
+        result.update(img=path)
+        return HttpResponse(json.dumps(result), content_type='application/json')
+    else:
+        return HttpResponse('不支持的请求')
+
+
 '''
 文件的后缀名 
 
@@ -73,6 +93,8 @@ def upload(request):
 对图片文件进行重命名
 
 """
+
+
 def get_file_name(old_name):
     # .png .jpg
     # 获取客服端图片的后缀名

@@ -6,4 +6,5 @@ from upload01 import views
 # 二进制数据
 urlpatterns = [
     url('up_img/', views.upload, name='upload'),
+    url('ajax/', views.ajax_upload),
 ]
