@@ -11,16 +11,19 @@
                 //封装form表单数据的对象
                 let data = new FormData();
                 data.append('msg', $('#msg').val());
+
                 data.append('img', $('#img')[0].files[0]);
                 let settings = {
                     url: 'http://127.0.0.1:8001/upload/ajax/',
                     type: 'post',
                     data: data,
+                    //
                     contentType: false,
                     // 不要让jquery处理数据
                     processData: false,
                     success: function (result) {
-                        $('#show_img').append($('<img>').attr('src', 'http://127.0.0.1:8001/' + result.img))
+                        alert(result.img)
+                        // $('#show_img').append($('<img>').attr('src', 'http://127.0.0.1:8001/' + result.img))
                     }
                 };
                 $.ajax(settings)

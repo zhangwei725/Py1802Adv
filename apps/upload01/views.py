@@ -69,14 +69,24 @@ def upload(request):
         return HttpResponse('不支持的请求')
 
 
+# 不上传crsf_tooken
 @csrf_exempt
 def ajax_upload(request):
     result = {}
     if request.method == 'POST':
-        username = request.POST.get('username')
-        path = save_file(request)
+        username = request.POST.get('msg')
+        path = save_file(request, 'img')
         result.update(img=path)
-        return HttpResponse(json.dumps(result), content_type='application/json')
+        #  将字典对象转化json数据
+        """
+        python  obj    数组 
+                 {}     [] 列表
+        """
+
+        li = ['1', 2, 3]
+
+        json_str = json.dumps(result)
+        return HttpResponse(json_str, content_type='application/json')
     else:
         return HttpResponse('不支持的请求')
 
@@ -101,8 +111,8 @@ def get_file_name(old_name):
     return new_name + suffix_name
 
 
-def save_file(request):
-    upload_file = request.FILES.get('head')
+def save_file(request, name):
+    upload_file = request.FILES.get(name)
     chunks = upload_file.chunks()  #
     path = get_file_path(1) + get_file_name(upload_file.name)
     with open(path, 'wb') as f:
@@ -150,7 +160,7 @@ class RegisterView(View):
         company = request.POST.get('company')
         tel = request.POST.get('tel')
         qq = request.POST.get('qq')
-        head = save_file(request)
+        head = save_file(request, 'head')
         try:
             Account.objects.get(email=email)
         except Account.DoesNotExist:
