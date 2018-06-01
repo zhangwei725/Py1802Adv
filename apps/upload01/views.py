@@ -1,10 +1,13 @@
 import datetime
 import json
 
+from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
+
+from apps.upload01.models import Account
 
 
 class UploadView(View):
@@ -71,13 +74,7 @@ def ajax_upload(request):
     result = {}
     if request.method == 'POST':
         username = request.POST.get('username')
-        upload_file = request.FILES.get('img')
-        chunks = upload_file.chunks()  #
-        path = get_file_path(1) + get_file_name(upload_file.name)
-        with open(path, 'wb') as f:
-            for chunk in chunks:
-                f.write(chunk)
-            f.flush()
+        path = save_file(request)
         result.update(img=path)
         return HttpResponse(json.dumps(result), content_type='application/json')
     else:
@@ -91,7 +88,6 @@ def ajax_upload(request):
 
 """
 对图片文件进行重命名
-
 """
 
 
@@ -103,6 +99,17 @@ def get_file_name(old_name):
     # IMG20180503161930
     new_name = 'IMG%s' % (datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
     return new_name + suffix_name
+
+
+def save_file(request):
+    upload_file = request.FILES.get('head')
+    chunks = upload_file.chunks()  #
+    path = get_file_path(1) + get_file_name(upload_file.name)
+    with open(path, 'wb') as f:
+        for chunk in chunks:
+            f.write(chunk)
+        f.flush()
+    return path
 
 
 def get_file_path(uid):
@@ -117,3 +124,42 @@ def get_file_path(uid):
         # 就创建目录
         os.makedirs(save_path)
     return save_path
+
+
+class RegisterView(View):
+    def get(self, request):
+        return render(request, 'register.html')
+
+    """
+        # python 自带的md5加密
+        import hashlib
+        md5 = hashlib.md5
+       
+        password = md5.update(password.encode(encoding='utf-8'))
+        # django字典的加密方式
+        encrypt_password = make_password(password)
+    """
+
+    @csrf_exempt
+    def post(self, request):
+        # 对密码进行加密
+        email = request.POST.get('email')
+        # 对密码进行加密
+        encrypt_password = make_password(request.POST.get('password'))
+        contact = request.POST.get('contact')
+        company = request.POST.get('company')
+        tel = request.POST.get('tel')
+        qq = request.POST.get('qq')
+        head = save_file(request)
+        try:
+            Account.objects.get(email=email)
+        except Account.DoesNotExist:
+            Account.objects.create(email=email,
+                                   password=encrypt_password,
+                                   company=company,
+                                   contacts=contact,
+                                   phone=tel,
+                                   qq=qq,
+                                   head=head
+                                   )
+        return render(request, 'index.html')
