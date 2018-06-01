@@ -13,6 +13,7 @@ ALLOWED_HOSTS = []
 
 MY_APP = [
     'apps.upload01',
+    'apps.session01',
 ]
 SYS_APP = [
     'django.contrib.admin',
