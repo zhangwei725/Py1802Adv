@@ -114,3 +114,15 @@ SESSION_COOKIE_AGE = 7 * 24 * 60 * 60  # session cookie的失效时间
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 # True  如果30分钟没有跟服务器进行通信 session就会失效
 SESSION_SAVE_EVERY_REQUEST = True
+# 配置session存储方式
+# SESSION_ENGINE = 'django.contrib.session.backends.db'
+# 使用内存缓存
+# SESSION_ENGINE = 'django.contrib.session.backends.cache'
+
+# 使用文件缓存
+# SESSION_ENGINE = 'django.contrib.session.backends.file'
+# 指定文件缓存的目录
+# SESSION_FILE_PATH = ""
+# var/folders/d3/xxfsdfsfdsfdsfds
+# 采用内存缓存 + 数据库
+# SESSION_ENGINE = 'django.contrib.session.backends.cache_db'

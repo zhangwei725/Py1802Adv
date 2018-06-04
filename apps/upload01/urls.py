@@ -8,4 +8,5 @@ urlpatterns = [
     url('up_img/', views.upload, name='upload'),
     url('ajax/', views.ajax_upload),
     url('register/', views.RegisterView.as_view()),
+
 ]

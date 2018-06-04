@@ -1,6 +1,6 @@
 from django.contrib.sessions.backends.cache import SessionStore
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
 
 # cookie 存储数据的格式  key:value
 """
@@ -121,7 +121,40 @@ def set_exp(request):
     return HttpResponse('session,局部设置过期时间')
 
 
+# 测试重定向技术
+def test_redirect(request):
+    return redirect('/session/5/')
+
+
 def test(request):
     session_store = request.session
     expiry = session_store.get('expiry')
     return HttpResponse('session,删除session')
+
+
+# 7天免登陆
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        if username == 'xiaoming' and password == '123':
+            request.session['user'] = {'username': 'xiaming', 'uid': 1}
+            return redirect('/session/index/')
+    else:
+        return render(request, 'login.html')
+
+
+#     cookie 4k   只能存asc||
+
+def index(request):
+    user = request.session.get('user')
+    return render(request, 'index.html', {'user': user})
+
+
+def register(request):
+    return None
+
+
+def loginout(request):
+    del request.session['user']
+    return redirect('/session/index')

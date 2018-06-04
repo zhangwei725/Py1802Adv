@@ -10,5 +10,10 @@ urlpatterns = [
     url('3/', views.del_session),
     url('4/', views.set_exp),
     url('5/', views.test),
+    url('login/', views.login, name='login'),
+    url('register/', views.register, name='register'),
+    url('loginout/', views.loginout, name='loginout'),
+    url('index/', views.index, name='index'),
+    url('redirect/', views.test_redirect),
 
 ]
