@@ -158,3 +158,9 @@ def register(request):
 def loginout(request):
     del request.session['user']
     return redirect('/session/index')
+
+
+
+
+
+
