@@ -103,3 +103,14 @@ MEDIA_ROOT = BASE_DIR + '/media/'
 MEDIA_URL = '/media/'
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024
+
+# 跟session配置相关
+
+# 配置cookie存储的键 sessionid=
+SESSION_COOKIE_NAME = 'sessionid'
+SESSION_COOKIE_PATH = '/'
+SESSION_COOKIE_AGE = 7 * 24 * 60 * 60  # session cookie的失效时间
+# 是否关闭浏览器session失效
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+# True  如果30分钟没有跟服务器进行通信 session就会失效
+SESSION_SAVE_EVERY_REQUEST = True
