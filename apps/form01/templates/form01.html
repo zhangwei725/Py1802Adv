@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        table {
+            text-align: center;
+            border-collapse: collapse;
+        }
+
+        table th, table, td {
+            margin: 10px;
+            padding: 10px;
+        }
+
+
+    </style>
+</head>
+<body>
+<form action="/form/2/" method="post">
+
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    {#        {{ form.as_p }}#}
+    {#        {{ form.as_ul }}#}
+
+    <input type="submit" value="提交">
+</form>
+
+<form action="/form/2/" method="post">
+
+    {% csrf_token %}
+    <input type="submit" value="提交">
+</form>
+
+</body>
+</html>
