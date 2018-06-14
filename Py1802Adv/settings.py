@@ -14,6 +14,8 @@ ALLOWED_HOSTS = []
 MY_APP = [
     'apps.upload01',
     'apps.session01',
+    'apps.form01',
+    'apps.cache01',
 ]
 SYS_APP = [
     'django.contrib.admin',
@@ -27,14 +29,19 @@ SYS_APP = [
 INSTALLED_APPS = SYS_APP + MY_APP
 
 MIDDLEWARE = [
+    # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
 ]
+#
+# CACHE_MIDDLEWARE_SECONDS = 60 * 60
+
 ROOT_URLCONF = 'Py1802Adv.urls'
 
 TEMPLATES = [
@@ -126,3 +133,52 @@ SESSION_SAVE_EVERY_REQUEST = True
 # var/folders/d3/xxfsdfsfdsfdsfds
 # 采用内存缓存 + 数据库
 # SESSION_ENGINE = 'django.contrib.session.backends.cache_db'
+
+"""===========缓存配置start============"""
+CACHE = {
+    # 'default': {
+    #     #  指定缓存方式 (文件缓存)
+    #     'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+    #     # 指定缓存文件的保存路径
+    #     'LOCATION': 'file://d:/cache/tmall',  # 可选
+    #     """
+    #     缓存有效期
+    #     正整数  默认300秒
+    #     None 永不过期
+    #     0 立即过期
+    #     """
+    #     'TIMEOUT': 500
+    # },
+    # 小网站 ,例如内部使用的系统
+
+    #     必须先安装 Memcache数据库
+    #     下载python-memcache库
+    # 'default': {
+    #     #  指定缓存方式 (Memcache)
+    #     'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+    #     # 指定缓存数据库的ip地址和端口python-memcache
+    #     'LOCATION': '127.0.0.1:11211',
+    #     'TIMEOUT': 500
+    # },
+
+    # 需要依赖 pylibmc
+    # 'default': {
+    #     #  指定缓存方式 (Memcache)
+    #     'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+    #     # 指定缓存数据库的ip地址和端口python-memcache
+    #     'LOCATION': '127.0.0.1:11211',
+    #     'TIMEOUT': 500
+    # }
+    #     使用redis缓存
+    #    安装第三方的库  django-redis
+
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        # 指定缓存数据库的ip地址和端口python-memcache
+        'LOCATION': 'redis://127.0.0.1:6379',
+        'TIMEOUT': 500
+    }
+}
+# 文件   数据库   缓存+ 数据   redis
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'

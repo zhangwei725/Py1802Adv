@@ -1,0 +1,16 @@
+{% load  cache %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+{% cache 100 test %}
+<body>
+<p>不使用缓存:{{ time }}</p>
+    <!-- 局部缓存-->
+    <p>使用缓存: {{ time }}</p>
+{% endcache %}
+</body>
+</html>
