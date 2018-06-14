@@ -14,7 +14,7 @@ def test_cache(request):
 
 
 # 单个视图函数缓存
-@cache_page(5)
+@cache_page(15)
 def test_cache1(request):
     time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     return render(request, 'cache_page.html', {'time': time})

@@ -135,7 +135,7 @@ SESSION_SAVE_EVERY_REQUEST = True
 # SESSION_ENGINE = 'django.contrib.session.backends.cache_db'
 
 """===========缓存配置start============"""
-CACHE = {
+CACHES = {
     # 'default': {
     #     #  指定缓存方式 (文件缓存)
     #     'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
@@ -171,14 +171,22 @@ CACHE = {
     # }
     #     使用redis缓存
     #    安装第三方的库  django-redis
-
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
         # 指定缓存数据库的ip地址和端口python-memcache
-        'LOCATION': 'redis://127.0.0.1:6379',
-        'TIMEOUT': 500
+        'LOCATION': 'redis://127.0.0.1:6379?db=0',
+        'TIMEOUT': 500,
+        'OPTION': {
+            # 设置redis数据库密码
+            # 'PASSWORD': ''
+            # 设置默认使用连接池连接redis
+            "CONNECTION_POOL_KWARGS": {"max_connections": 100}
+        }
     }
 }
+# 全局配置
+REDIS_TIMEOUT = 7 * 24 * 60 * 60
+
 # 文件   数据库   缓存+ 数据   redis
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_CACHE_ALIAS = 'default'
